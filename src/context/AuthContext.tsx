@@ -88,7 +88,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [loadProfile])
 
   const signIn = useCallback(async (identifier: string, password: string) => {
-    const trimmed = identifier.trim()
+    // Allow "@username" from the UI, and only treat values with a real domain as email.
+    const trimmed = identifier.trim().replace(/^@+/, '')
     let email = trimmed
 
     if (!trimmed.includes('@')) {

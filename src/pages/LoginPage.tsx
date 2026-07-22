@@ -36,6 +36,7 @@ export function LoginPage() {
               onChange={(event) => setIdentifier(event.target.value)}
               required
               autoComplete="username"
+              placeholder="you@email.com or username"
             />
           </label>
           <label>
