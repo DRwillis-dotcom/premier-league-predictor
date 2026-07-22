@@ -155,27 +155,22 @@ h1 {
 }
 
 .fixture-teams {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 1rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0.85rem;
   margin: 1rem 0;
 }
 
-.team-block {
+.team-score {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.team-block.right {
-  flex-direction: row-reverse;
-  text-align: right;
+  gap: 0.65rem;
 }
 
 .crest {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   object-fit: contain;
 }
 
@@ -184,20 +179,13 @@ h1 {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.fixture-center,
 .actual-score {
+  min-width: 2rem;
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
 }
 
-.score-picker {
-  display: flex;
-  align-items: end;
-  gap: 0.5rem;
-}
-
-.score-picker label,
 .stack-form label,
 .matchday-select {
   display: grid;
@@ -206,7 +194,7 @@ h1 {
   color: #cbd5e1;
 }
 
-.score-picker select,
+.score-select,
 .stack-form input,
 .matchday-select select {
   background: #0f172a;
@@ -216,9 +204,16 @@ h1 {
   padding: 0.55rem 0.7rem;
 }
 
-.score-divider {
-  padding-bottom: 0.55rem;
+.score-select {
+  min-width: 3.25rem;
+  text-align: center;
+  font-size: 1.1rem;
   font-weight: 700;
+}
+
+.score-divider {
+  font-weight: 700;
+  color: #94a3b8;
 }
 
 .prediction-tag.muted,
@@ -365,15 +360,8 @@ h1 {
     align-items: stretch;
   }
 
-  .fixture-teams,
   .score-item,
   .panel-header {
     grid-template-columns: 1fr;
-  }
-
-  .team-block,
-  .team-block.right {
-    flex-direction: row;
-    text-align: left;
   }
 }

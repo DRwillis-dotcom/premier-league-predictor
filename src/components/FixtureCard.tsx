@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Fixture, Prediction } from '../lib/types'
 import { isFixtureOpen } from '../lib/scoring'
-import { ScorePicker } from './ScorePicker'
+import { ScoreSelect } from './ScorePicker'
 
 type FixtureCardProps = {
   fixture: Fixture
@@ -30,6 +30,7 @@ export function FixtureCard({ fixture, prediction, saving = false, onSave }: Fix
 
   const finished = fixture.status === 'FINISHED'
   const points = prediction?.points
+  const disabled = !open || saving
 
   return (
     <article className="fixture-card">
@@ -39,25 +40,37 @@ export function FixtureCard({ fixture, prediction, saving = false, onSave }: Fix
       </div>
 
       <div className="fixture-teams">
-        <TeamBlock name={fixture.home_team} crest={fixture.home_team_crest} />
-        <div className="fixture-center">
+        <div className="team-score">
+          <Crest crest={fixture.home_team_crest} name={fixture.home_team} />
           {finished ? (
-            <div className="actual-score">
-              {fixture.home_score} - {fixture.away_score}
-            </div>
+            <span className="actual-score">{fixture.home_score}</span>
           ) : (
-            <ScorePicker
-              homeScore={homeScore}
-              awayScore={awayScore}
-              disabled={!open || saving}
-              onChange={(home, away) => {
-                setHomeScore(home)
-                setAwayScore(away)
-              }}
+            <ScoreSelect
+              value={homeScore}
+              disabled={disabled}
+              aria-label={`${fixture.home_team} score`}
+              onChange={setHomeScore}
             />
           )}
         </div>
-        <TeamBlock name={fixture.away_team} crest={fixture.away_team_crest} align="right" />
+
+        <span className="score-divider" aria-hidden="true">
+          -
+        </span>
+
+        <div className="team-score away">
+          {finished ? (
+            <span className="actual-score">{fixture.away_score}</span>
+          ) : (
+            <ScoreSelect
+              value={awayScore}
+              disabled={disabled}
+              aria-label={`${fixture.away_team} score`}
+              onChange={setAwayScore}
+            />
+          )}
+          <Crest crest={fixture.away_team_crest} name={fixture.away_team} />
+        </div>
       </div>
 
       <div className="fixture-footer">
@@ -87,19 +100,9 @@ export function FixtureCard({ fixture, prediction, saving = false, onSave }: Fix
   )
 }
 
-function TeamBlock({
-  name,
-  crest,
-  align = 'left',
-}: {
-  name: string
-  crest: string | null
-  align?: 'left' | 'right'
-}) {
-  return (
-    <div className={`team-block ${align}`}>
-      {crest ? <img src={crest} alt="" className="crest" /> : <div className="crest placeholder" />}
-      <span>{name}</span>
-    </div>
-  )
+function Crest({ crest, name }: { crest: string | null; name: string }) {
+  if (crest) {
+    return <img src={crest} alt={name} title={name} className="crest" />
+  }
+  return <div className="crest placeholder" title={name} aria-label={name} />
 }

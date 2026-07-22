@@ -1,49 +1,31 @@
-type ScorePickerProps = {
-  homeScore: number
-  awayScore: number
+type ScoreSelectProps = {
+  value: number
   disabled?: boolean
-  onChange: (home: number, away: number) => void
+  'aria-label': string
+  onChange: (score: number) => void
 }
 
 const SCORE_OPTIONS = Array.from({ length: 10 }, (_, i) => i)
 
-export function ScorePicker({
-  homeScore,
-  awayScore,
+export function ScoreSelect({
+  value,
   disabled = false,
+  'aria-label': ariaLabel,
   onChange,
-}: ScorePickerProps) {
+}: ScoreSelectProps) {
   return (
-    <div className="score-picker">
-      <label>
-        Home
-        <select
-          value={homeScore}
-          disabled={disabled}
-          onChange={(event) => onChange(Number(event.target.value), awayScore)}
-        >
-          {SCORE_OPTIONS.map((score) => (
-            <option key={`home-${score}`} value={score}>
-              {score}
-            </option>
-          ))}
-        </select>
-      </label>
-      <span className="score-divider">-</span>
-      <label>
-        Away
-        <select
-          value={awayScore}
-          disabled={disabled}
-          onChange={(event) => onChange(homeScore, Number(event.target.value))}
-        >
-          {SCORE_OPTIONS.map((score) => (
-            <option key={`away-${score}`} value={score}>
-              {score}
-            </option>
-          ))}
-        </select>
-      </label>
-    </div>
+    <select
+      className="score-select"
+      value={value}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      onChange={(event) => onChange(Number(event.target.value))}
+    >
+      {SCORE_OPTIONS.map((score) => (
+        <option key={score} value={score}>
+          {score}
+        </option>
+      ))}
+    </select>
   )
 }
