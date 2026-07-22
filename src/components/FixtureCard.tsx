@@ -59,6 +59,7 @@ export function FixtureCard({ fixture, prediction, saving = false, onSave }: Fix
         </span>
 
         <div className="team-score away">
+          <Crest crest={fixture.away_team_crest} name={fixture.away_team} />
           {finished ? (
             <span className="actual-score">{fixture.away_score}</span>
           ) : (
@@ -69,7 +70,6 @@ export function FixtureCard({ fixture, prediction, saving = false, onSave }: Fix
               onChange={setAwayScore}
             />
           )}
-          <Crest crest={fixture.away_team_crest} name={fixture.away_team} />
         </div>
       </div>
 

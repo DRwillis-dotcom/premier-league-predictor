@@ -168,6 +168,10 @@ h1 {
   gap: 0.65rem;
 }
 
+.team-score.away {
+  flex-direction: row-reverse;
+}
+
 .crest {
   width: 2.75rem;
   height: 2.75rem;
