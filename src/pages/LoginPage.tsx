@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 
 export function LoginPage() {
   const { signIn, user } = useAuth()
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -16,7 +16,7 @@ export function LoginPage() {
     setSubmitting(true)
     setError(null)
 
-    const result = await signIn(email, password)
+    const result = await signIn(identifier, password)
     if (result.error) setError(result.error)
     setSubmitting(false)
   }
@@ -29,13 +29,13 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit} className="stack-form">
           <label>
-            Email
+            Email or username
             <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              value={identifier}
+              onChange={(event) => setIdentifier(event.target.value)}
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </label>
           <label>

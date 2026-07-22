@@ -137,6 +137,21 @@ create policy "Users can update own predictions before kickoff"
     )
   );
 
+-- Resolve username -> email for login (Supabase Auth still requires email)
+create or replace function public.get_email_by_username(p_username text)
+returns text
+language sql
+stable
+security definer
+set search_path = public, auth
+as $$
+  select u.email
+  from public.profiles p
+  join auth.users u on u.id = p.id
+  where p.username = lower(trim(p_username))
+  limit 1;
+$$;
+
 grant usage on schema public to anon, authenticated;
 grant select on public.profiles to anon, authenticated;
 grant select on public.fixtures to anon, authenticated;
@@ -144,3 +159,4 @@ grant select on public.predictions to anon, authenticated;
 grant insert, update on public.profiles to authenticated;
 grant insert, update on public.predictions to authenticated;
 grant execute on function public.get_league_table(int) to anon, authenticated;
+grant execute on function public.get_email_by_username(text) to anon, authenticated;

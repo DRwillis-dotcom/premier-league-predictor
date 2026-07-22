@@ -16,7 +16,7 @@ type AuthContextValue = {
   user: User | null
   profile: Profile | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>
+  signIn: (identifier: string, password: string) => Promise<{ error: string | null }>
   signUp: (
     email: string,
     password: string,
@@ -87,7 +87,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [loadProfile])
 
-  const signIn = useCallback(async (email: string, password: string) => {
+  const signIn = useCallback(async (identifier: string, password: string) => {
+    const trimmed = identifier.trim()
+    let email = trimmed
+
+    if (!trimmed.includes('@')) {
+      const { data, error: lookupError } = await supabase.rpc('get_email_by_username', {
+        p_username: trimmed.toLowerCase(),
+      })
+
+      if (lookupError || !data) {
+        return { error: 'Invalid login credentials' }
+      }
+
+      email = data as string
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     return { error: error?.message ?? null }
   }, [])
