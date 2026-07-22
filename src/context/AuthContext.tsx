@@ -99,10 +99,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { error: 'Username must be at least 3 characters.' }
       }
 
+      const emailRedirectTo = `${window.location.origin}${import.meta.env.BASE_URL}`.replace(
+        /\/$/,
+        '',
+      )
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo,
           data: {
             username: trimmed,
             display_name: trimmed,

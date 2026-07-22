@@ -35,7 +35,7 @@ export function SignUpPage() {
 
         {success ? (
           <div className="notice success">
-            Account created. Check your email to confirm, then sign in.
+            Account created. You can sign in now.
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="stack-form">
