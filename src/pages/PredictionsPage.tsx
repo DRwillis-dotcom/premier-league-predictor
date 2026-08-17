@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FixtureCard } from '../components/FixtureCard'
 import { useAuth } from '../context/AuthContext'
+import { isFixtureOpen } from '../lib/scoring'
 import { PL_SEASON, type Fixture, type Prediction } from '../lib/types'
 import { supabase } from '../lib/supabase'
 
@@ -62,10 +63,7 @@ export function PredictionsPage() {
   }, [fixtures])
 
   const defaultMatchday = useMemo(() => {
-    const now = Date.now()
-    const upcoming = fixtures.filter(
-      (fixture) => fixture.status === 'SCHEDULED' && new Date(fixture.kickoff).getTime() > now,
-    )
+    const upcoming = fixtures.filter((fixture) => isFixtureOpen(fixture))
     if (upcoming.length > 0) {
       return upcoming[0].matchday
     }

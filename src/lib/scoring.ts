@@ -17,6 +17,12 @@ export function getResultLabel(home: number, away: number): string {
   return 'Draw'
 }
 
+/** football-data.org statuses for fixtures that have not kicked off yet */
+export const PREDICTABLE_STATUSES = ['SCHEDULED', 'TIMED'] as const
+
 export function isFixtureOpen(fixture: { status: string; kickoff: string }): boolean {
-  return fixture.status === 'SCHEDULED' && new Date(fixture.kickoff) > new Date()
+  return (
+    PREDICTABLE_STATUSES.includes(fixture.status as (typeof PREDICTABLE_STATUSES)[number]) &&
+    new Date(fixture.kickoff) > new Date()
+  )
 }

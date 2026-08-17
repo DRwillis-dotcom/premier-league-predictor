@@ -120,7 +120,7 @@ create policy "Users can insert own predictions"
     and exists (
       select 1 from public.fixtures f
       where f.id = fixture_id
-        and f.status = 'SCHEDULED'
+        and f.status in ('SCHEDULED', 'TIMED')
         and f.kickoff > now()
     )
   );
@@ -132,7 +132,7 @@ create policy "Users can update own predictions before kickoff"
     and exists (
       select 1 from public.fixtures f
       where f.id = fixture_id
-        and f.status = 'SCHEDULED'
+        and f.status in ('SCHEDULED', 'TIMED')
         and f.kickoff > now()
     )
   );
