@@ -91,7 +91,7 @@ export function PredictionsPage() {
     const existing = predictionByFixture.get(fixtureId)
 
     if (existing) {
-      const { error: updateError } = await supabase
+      const { data, error: updateError } = await supabase
         .from('predictions')
         .update({
           home_score: homeScore,
@@ -99,20 +99,35 @@ export function PredictionsPage() {
           updated_at: new Date().toISOString(),
         })
         .eq('id', existing.id)
+        .select()
+        .single()
 
-      if (updateError) setError(updateError.message)
+      if (updateError) {
+        setError(updateError.message)
+      } else if (data) {
+        setPredictions((prev) =>
+          prev.map((p) => (p.id === existing.id ? (data as Prediction) : p)),
+        )
+      }
     } else {
-      const { error: insertError } = await supabase.from('predictions').insert({
-        user_id: user.id,
-        fixture_id: fixtureId,
-        home_score: homeScore,
-        away_score: awayScore,
-      })
+      const { data, error: insertError } = await supabase
+        .from('predictions')
+        .insert({
+          user_id: user.id,
+          fixture_id: fixtureId,
+          home_score: homeScore,
+          away_score: awayScore,
+        })
+        .select()
+        .single()
 
-      if (insertError) setError(insertError.message)
+      if (insertError) {
+        setError(insertError.message)
+      } else if (data) {
+        setPredictions((prev) => [...prev, data as Prediction])
+      }
     }
 
-    await loadData()
     setSavingId(null)
   }
 
