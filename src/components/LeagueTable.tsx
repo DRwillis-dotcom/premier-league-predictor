@@ -9,7 +9,7 @@ export function LeagueTable({ rows, highlightUserId }: LeagueTableProps) {
   if (rows.length === 0) {
     return (
       <div className="empty-state">
-        <p>No scores yet. Predictions will appear here once matches finish.</p>
+        <p>No players yet. Sign up to join the league!</p>
       </div>
     )
   }
@@ -24,6 +24,7 @@ export function LeagueTable({ rows, highlightUserId }: LeagueTableProps) {
             <th>Pts</th>
             <th>Exact</th>
             <th>Results</th>
+            <th>Predicted</th>
             <th>Scored</th>
           </tr>
         </thead>
@@ -41,6 +42,7 @@ export function LeagueTable({ rows, highlightUserId }: LeagueTableProps) {
               <td>{row.total_points}</td>
               <td>{row.exact_scores}</td>
               <td>{row.correct_results}</td>
+              <td>{row.predictions_made}</td>
               <td>{row.predictions_scored}</td>
             </tr>
           ))}

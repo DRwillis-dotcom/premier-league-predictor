@@ -66,6 +66,7 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- League table
+-- Drop first if return type changes: drop function if exists public.get_league_table(int);
 create or replace function public.get_league_table(p_season int)
 returns table (
   user_id uuid,
@@ -74,6 +75,7 @@ returns table (
   total_points bigint,
   exact_scores bigint,
   correct_results bigint,
+  predictions_made bigint,
   predictions_scored bigint
 )
 language sql
@@ -88,10 +90,11 @@ as $$
     coalesce(sum(p.points), 0)::bigint as total_points,
     count(*) filter (where p.points = 3)::bigint as exact_scores,
     count(*) filter (where p.points = 1)::bigint as correct_results,
+    count(*) filter (where p.id is not null)::bigint as predictions_made,
     count(*) filter (where p.points is not null)::bigint as predictions_scored
   from public.profiles pr
-  inner join public.predictions p on p.user_id = pr.id
-  inner join public.fixtures f on f.id = p.fixture_id and f.season = p_season
+  left join public.predictions p on p.user_id = pr.id
+  left join public.fixtures f on f.id = p.fixture_id and f.season = p_season
   group by pr.id, pr.username, pr.display_name
   order by total_points desc, exact_scores desc, correct_results desc, pr.username asc;
 $$;

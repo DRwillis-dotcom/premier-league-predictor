@@ -37,6 +37,7 @@ export type LeagueRow = {
   total_points: number
   exact_scores: number
   correct_results: number
+  predictions_made: number
   predictions_scored: number
 }
 
