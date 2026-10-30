@@ -19,6 +19,7 @@ export function Layout() {
           <NavLink to="/" end>
             Predict
           </NavLink>
+          <NavLink to="/picks">Game week</NavLink>
           <NavLink to="/league">League table</NavLink>
           <NavLink to="/my-scores">My scores</NavLink>
         </nav>

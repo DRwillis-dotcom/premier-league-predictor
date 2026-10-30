@@ -113,8 +113,23 @@ create policy "Users can update own profile"
 create policy "Fixtures are viewable by everyone"
   on public.fixtures for select using (true);
 
-create policy "Predictions are viewable by everyone"
-  on public.predictions for select using (true);
+drop policy if exists "Predictions are viewable by everyone" on public.predictions;
+drop policy if exists "Users can view own predictions" on public.predictions;
+drop policy if exists "Predictions are public after kickoff" on public.predictions;
+
+create policy "Users can view own predictions"
+  on public.predictions for select
+  using (auth.uid() = user_id);
+
+create policy "Predictions are public after kickoff"
+  on public.predictions for select
+  using (
+    exists (
+      select 1 from public.fixtures f
+      where f.id = fixture_id
+        and f.kickoff <= now()
+    )
+  );
 
 create policy "Users can insert own predictions"
   on public.predictions for insert

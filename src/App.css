@@ -352,6 +352,51 @@ h1 {
   margin-top: 1rem;
 }
 
+.picks-locked {
+  display: grid;
+  gap: 0.35rem;
+  color: #cbd5e1;
+}
+
+.picks-table-wrap {
+  overflow-x: auto;
+}
+
+.picks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.picks-table th,
+.picks-table td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.picks-table th {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.pick-pts.exact {
+  color: #86efac;
+  font-weight: 700;
+}
+
+.pick-pts.result {
+  color: #cbd5e1;
+}
+
+.pick-pts.miss {
+  color: #94a3b8;
+}
+
+.picks-missing {
+  margin: 0.75rem 0 0;
+}
+
 .empty-state,
 .setup-screen,
 .loading-screen {

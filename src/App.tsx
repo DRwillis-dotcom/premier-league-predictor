@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { isSupabaseConfigured } from './lib/supabase'
+import { GameWeekPage } from './pages/GameWeekPage'
 import { LeaguePage } from './pages/LeaguePage'
 import { LoginPage } from './pages/LoginPage'
 import { MyScoresPage } from './pages/MyScoresPage'
@@ -24,6 +25,7 @@ function AppRoutes() {
       <Route path="/signup" element={<SignUpPage />} />
       <Route element={<Layout />}>
         <Route index element={<PredictionsPage />} />
+        <Route path="picks" element={<GameWeekPage />} />
         <Route path="league" element={<LeaguePage />} />
         <Route
           path="my-scores"
